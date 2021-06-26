@@ -1,15 +1,63 @@
 {{template "base" .}}
 
 {{define "content"}}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>This is home page</h1>
-                <p>hello home page</p>
-                <p>paragraph with some text</p>
-                <p>paragraph with some text</p>
-                <p>paragraph with some text</p>
+    <div class="main-content-wrapper">
+        <seciton>
+            <div id="main-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#main-carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#main-carousel" data-slide-to="1"></li>
+                    <li data-target="#main-carousel" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/static/images/woman-laptop.png" class="d-block w-100" alt="woman-laptop">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>First slide label</h5>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/static/images/outside.png" class="d-block w-100" alt="outside">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Second slide label</h5>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/static/images/tray.png" class="d-block w-100" alt="tray">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Third slide label</h5>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="container">
+                <h1 class="text-center mt-3">Welcome to the Best Hotel on a Coast</h1>
+                <div class="row">
+                    <div class="col">
+                        <p>Located within walking distance of the Atlantic City boardwalk, shopping, clubs and many
+                            local casinos including Bally's Atlantic City, Caesar's and Hard Rock Casino Resort, this
+                            hotel offers guestrooms 1 block from the Atlantic City Beach.
+                        </p>
+                        <p>Best Western Envoy Inn is less than 2 km from Ripley's Believe It or Not museum and the
+                            Convention Center. Other nearby attractions include the Noyes Museum and Blue Heron Pines
+                            Golf Club.
+                        </p>
+                        <p>Each guestroom features cable satellite TV and complimentary WiFi. Envoy Best Western also
+                            provides a complimentary newspaper each morning. Business services, such as fax and copying
+                            are available. A complimentary full breakfast is also offered.
+                        </p>
+                        <p>We speak your language!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <a href="/make-reservation" class="btn btn-success">Make Reservation Now</a>
+                    </div>
+                </div>
+            </div>
+        </seciton>
     </div>
 {{end}}
