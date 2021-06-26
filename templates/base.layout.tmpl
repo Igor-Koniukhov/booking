@@ -61,11 +61,11 @@
         </nav>
     </header>
     <main>
+        <div class="main-content-wrapper">
+            {{block "content" .}}
 
-        {{block "content" .}}
-
-        {{end}}
-
+            {{end}}
+        </div>
 
 
     </main>

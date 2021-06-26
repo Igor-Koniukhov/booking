@@ -21,11 +21,11 @@ func main() {
 portNumber:= os.Getenv("PORT")
 
 	//change this to true when in production
-	app.InProduction = true
+	app.InProduction = false
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
-	session.Cookie.Persist = false
+	session.Cookie.Persist = true
 	session.Cookie.SameSite = http.SameSiteLaxMode
 	session.Cookie.Secure = app.InProduction
 
@@ -36,7 +36,7 @@ portNumber:= os.Getenv("PORT")
 		log.Fatal("cannot create template cache")
 	}
 	app.TemplateCache = tc
-	app.UseCache = true
+	app.UseCache = false
 
 
 	repo := handlers.NewRepo(&app)
