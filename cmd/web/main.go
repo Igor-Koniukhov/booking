@@ -20,7 +20,7 @@ func main() {
 
 
 	//change this to true when in production
-	app.InProduction = false
+	app.InProduction = true
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
