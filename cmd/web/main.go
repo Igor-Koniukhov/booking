@@ -8,23 +8,24 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
-const portNumber = ":8080"
+//const portNumber = ":8080"
 var app config.AppConfig
 //from session manager pkg - duration of session without log-in repeating
 var session *scs.SessionManager
 
 func main() {
-
+portNumber:= os.Getenv("PORT")
 
 	//change this to true when in production
 	app.InProduction = true
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
-	session.Cookie.Persist = true
+	session.Cookie.Persist = false
 	session.Cookie.SameSite = http.SameSiteLaxMode
 	session.Cookie.Secure = app.InProduction
 
