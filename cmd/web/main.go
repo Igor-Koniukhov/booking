@@ -35,7 +35,7 @@ func main() {
 		log.Fatal("cannot create template cache")
 	}
 	app.TemplateCache = tc
-	app.UseCache = false
+	app.UseCache = true
 
 
 	repo := handlers.NewRepo(&app)
