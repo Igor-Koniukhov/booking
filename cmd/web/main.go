@@ -2,23 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com/Igor-Koniukhov/bookings/pkg/config"
-	"github.com/Igor-Koniukhov/bookings/pkg/handlers"
-	"github.com/Igor-Koniukhov/bookings/pkg/render"
+	"github.com/Igor-Koniukhov/bookings/internal/config"
+	"github.com/Igor-Koniukhov/bookings/internal/handlers"
+	"github.com/Igor-Koniukhov/bookings/internal/render"
 	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
-//const portNumber = ":8080"
+const portNumber = ":8080"
 var app config.AppConfig
 //from session manager pkg - duration of session without log-in repeating
 var session *scs.SessionManager
 
 func main() {
-portNumber:= os.Getenv("PORT")
+//portNumber:= os.Getenv("PORT")
 
 	//change this to true when in production
 	app.InProduction = false

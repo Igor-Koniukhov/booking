@@ -3,8 +3,8 @@ package render
 import (
 	"bytes"
 	"fmt"
-	"github.com/Igor-Koniukhov/bookings/pkg/config"
-	"github.com/Igor-Koniukhov/bookings/pkg/models"
+	"github.com/Igor-Koniukhov/bookings/internal/config"
+	"github.com/Igor-Koniukhov/bookings/internal/models"
 	"github.com/justinas/nosurf"
 	"html/template"
 	"log"
