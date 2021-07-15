@@ -20,6 +20,7 @@ var app *config.AppConfig
 // NewTemplates sets the config for the template package
 func NewTemplates(a *config.AppConfig) {
 	app = a
+
 }
 
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
@@ -33,6 +34,7 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *mod
 	if app.UseCache {
 		// get the template cache from the app config
 		tc = app.TemplateCache
+
 	} else {
 		tc, _ = CreateTemplateCache()
 	}
