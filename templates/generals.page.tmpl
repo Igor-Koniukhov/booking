@@ -1,80 +1,99 @@
-{{template "base".}}
+{{template "base" .}}
 
 {{define "content"}}
-    <div class="main-content-wrapper">
-        <section>
-            <div class="container">
-                <div class="row justify">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                        <img src="/static/images/generals-quarters.png" class="img-fluid img-thumbnail mx-auto d-block" alt="room image" >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h1 class="text-center mt-3">Generals Quarters</h1>
-                        <p>Best Western Envoy Inn is less than 2 km from Ripley's Believe It or Not museum and the
-                            Convention Center. Other nearby attractions include the Noyes Museum and Blue Heron Pines
-                            Golf Club.
-                        </p>
-                        <p>Each guestroom features cable satellite TV and complimentary WiFi. Envoy Best Western also
-                            provides a complimentary newspaper each morning. Business services, such as fax and copying
-                            are available. A complimentary full breakfast is also offered.
-                        </p>
-                        <p>We speak your language!</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col text-center">
-                        <a id="check-availability-button" href="#!" class="btn btn-success">Check Availability</a>
-                    </div>
-                </div>
+
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col">
+                <img src="/static/images/generals-quarters.png"
+                     class="img-fluid img-thumbnail mx-auto d-block room-image" alt="room image">
             </div>
-        </section>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mt-4">General's Quarters</h1>
+                <p>
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col text-center">
+
+                <a id="check-availability-button" href="#!" class="btn btn-success">Check Availability</a>
+
+            </div>
+        </div>
+
+
+
+
     </div>
+
 {{end}}
 
-{{ define "js"}}
+
+{{define "js"}}
     <script>
-        document.getElementById("check-availability-button").addEventListener('click', function () {
+        document.getElementById("check-availability-button").addEventListener("click", function () {
             let html = `
-        <form id="check-availability-form" action="" method="post" novalidate class="needs-validation>
-            <div class=form-row">
+        <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+            <div class="form-row">
                 <div class="col">
                     <div class="form-row" id="reservation-dates-modal">
                         <div class="col">
-                            <input disabled requered class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+                            <input disabled required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
                         </div>
                         <div class="col">
-                            <input disabled requered class="form-control" type="text" name="end" id="end" placeholder="Departure">
+                            <input disabled required class="form-control" type="text" name="end" id="end" placeholder="Departure">
                         </div>
+
                     </div>
                 </div>
             </div>
         </form>
         `;
-
-
             attention.custom({
-                title: "Choose your dates",
+                title: 'Choose your dates',
                 msg: html,
                 willOpen: () => {
-                    const elem = document.getElementById('reservation-dates-modal');
+                    const elem = document.getElementById("reservation-dates-modal");
                     const rp = new DateRangePicker(elem, {
                         format: 'yyyy-mm-dd',
                         showOnFocus: true,
                     })
                 },
                 didOpen: () => {
-                    document.getElementById('start').removeAttribute('disabled')
-                    document.getElementById('end').removeAttribute('disabled')
+                    document.getElementById("start").removeAttribute("disabled");
+                    document.getElementById("end").removeAttribute("disabled");
                 },
-                callback: function (result) {
+                callback: function(result) {
                     console.log("called");
+
                     let form = document.getElementById("check-availability-form");
                     let formData = new FormData(form);
                     formData.append("csrf_token", "{{.CSRFToken}}");
+
                     fetch('/search-availability-json', {
-                        method : "post",
+                        method: "post",
                         body: formData,
                     })
                         .then(response => response.json())
@@ -83,8 +102,6 @@
                             console.log(data.ok);
                             console.log(data.message);
                         })
-
-
                 }
             });
         })

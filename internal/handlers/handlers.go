@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Igor-Koniukhov/bookings/internal/config"
+	"github.com/Igor-Koniukhov/bookings/internal/forms"
 	"github.com/Igor-Koniukhov/bookings/internal/models"
 	"github.com/Igor-Koniukhov/bookings/internal/render"
 	"log"
@@ -41,6 +42,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
 //About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
+
 	//perform some logic
 	stringMap := make(map[string]string)
 	stringMap["test"] = "Hello, again."
@@ -55,9 +57,15 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-//Reservation renders the make a reservation page and displays form
+//Reservation renders the make a reservation page and displays forms
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+}
+// PostReservation handles the posting of a reservation forms
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+
 }
 
 //Generals renders the room page
@@ -81,7 +89,7 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	//start := r.FormValue("start")
 	end := r.Form.Get("end")
 	//end := r.FormValue("end")
-	w.Write([]byte(fmt.Sprintf("this is form value start: %v, and end: %v", start, end)))
+	w.Write([]byte(fmt.Sprintf("this is forms value start: %v, and end: %v, HELLO", start, end)))
 }
 
 type jsonResponse struct {
@@ -97,13 +105,13 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	}
 
 	out, err := json.MarshalIndent(resp, "", "    ")
-	if err !=nil {
+	if err != nil {
 		log.Println(err)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(out)
 
+	w.Write(out)
 
 }
 
