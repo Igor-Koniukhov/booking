@@ -147,6 +147,7 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
 //Contacts renders the contacts of organisation
 func (m *Repository) Contacts(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "contacts.page.tmpl", &models.TemplateData{})

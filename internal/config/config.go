@@ -12,3 +12,4 @@ type AppConfig struct {
 	InProduction bool
 	Session *scs.SessionManager
 }
+
