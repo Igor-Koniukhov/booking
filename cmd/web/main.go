@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"github.com/Igor-Koniukhov/bookings/internal/config"
 	"github.com/Igor-Koniukhov/bookings/internal/handlers"
+	"github.com/Igor-Koniukhov/bookings/internal/models"
 	"github.com/Igor-Koniukhov/bookings/internal/render"
 	"github.com/alexedwards/scs/v2"
 	"log"
@@ -19,6 +21,8 @@ var session *scs.SessionManager
 
 func main() {
 //portNumber:= os.Getenv("PORT")
+	//what am I going to put in the session
+	gob.Register(models.Reservation{})
 
 	//change this to true when in production
 	app.InProduction = false
