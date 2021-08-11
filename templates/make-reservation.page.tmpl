@@ -8,7 +8,7 @@
                     <div class="col">
                         <h1>Make reservation</h1>
                         {{$res := index .Data "reservation"}}
-                        <form action="/make-reservation" method="post" class="" novalidate>
+                        <form action="" method="post" class="" novalidate>
                             <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                             <div class="form-group mt-5">
                                 <label for="first_name">First name:</label>

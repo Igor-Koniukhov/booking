@@ -85,8 +85,6 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 
-
-
 	form.Required("first_name", "last_name", "email")
 	form.MinLength("first_name", 3, r)
 	form.IsEmail("email")
@@ -123,9 +121,8 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 //PostAvailability
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
-	//start := r.FormValue("start")
 	end := r.Form.Get("end")
-	//end := r.FormValue("end")
+
 	w.Write([]byte(fmt.Sprintf("this is forms value start: %v, and end: %v, HELLO", start, end)))
 }
 
@@ -147,7 +144,6 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-
 	w.Write(out)
 
 }
@@ -157,12 +153,16 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) Contacts(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "contacts.page.tmpl", &models.TemplateData{})
 }
+
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request)  {
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
 		log.Println("cannot get item from session")
+		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
+	//m.App.Session.Remove(r.Context(), "reservation")
 	data := make(map[string]interface{})
 	data["reservation"] = reservation
 

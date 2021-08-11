@@ -128,6 +128,18 @@
 
         }
 
+        {{with .Error}}
+        notify("{{.}}", "error")
+        {{end}}
+
+        {{with .Flash}}
+        notify("{{.}}", "success")
+        {{end}}
+
+        {{with .Warning}}
+        notify("{{.}}", "warning")
+        {{end}}
+
 
         function Prompt() {
             let toast = function (c) {
@@ -200,7 +212,7 @@
                     showCancelButton: true,
 
                     willOpen: () => {
-                        if (c.willOpen !== undefined){
+                        if (c.willOpen !== undefined) {
                             c.willOpen();
                         }
                     },
@@ -212,7 +224,7 @@
                         ]
                     },
                     didOpen: () => {
-                        if (c.didOpen !== undefined){
+                        if (c.didOpen !== undefined) {
                             c.didOpen();
                         }
                     },
@@ -227,22 +239,22 @@
                         } else {
                             c.callback(false)
                         }
-                    }else {
+                    } else {
                         c.callback(false)
                     }
                 }
 
-                }
+            }
 
-                return {
-                    toast: toast,
-                    success: success,
-                    error: error,
-                    custom: custom,
-
-                }
+            return {
+                toast: toast,
+                success: success,
+                error: error,
+                custom: custom,
 
             }
+
+        }
 
     </script>
 
