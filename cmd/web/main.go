@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Igor-Koniukhov/bookings/internal/config"
 	"github.com/Igor-Koniukhov/bookings/internal/handlers"
+	"github.com/Igor-Koniukhov/bookings/internal/helpers"
 	"github.com/Igor-Koniukhov/bookings/internal/models"
 	"github.com/Igor-Koniukhov/bookings/internal/render"
 	"github.com/alexedwards/scs/v2"
@@ -13,20 +14,43 @@ import (
 	"time"
 )
 
-const portNumber = "8080"
+const portNumber = ":8080"
 
 var app config.AppConfig
-//from session manager pkg - duration of session without log-in repeating
 var session *scs.SessionManager
+var infoLog *log.Logger
+var errorLog *log.Logger
 
+// main is the main function
 func main() {
-//portNumber:= os.Getenv("PORT")
-	//what am I going to put in the session
+	err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
+
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
+	// what am I going to put in the session
 	gob.Register(models.Reservation{})
 
-	//change this to true when in production
+	// change this to true when in production
 	app.InProduction = false
-	//set up the session
+	app.InfoLog = helpers.InfoLog
+	app.ErrorLog = helpers.ErrorLog
+
+	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -38,25 +62,16 @@ func main() {
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
+		return err
 	}
+
 	app.TemplateCache = tc
 	app.UseCache = false
-
 
 	repo := handlers.NewRepo(&app)
 	handlers.NewHandlers(repo)
 	render.NewTemplates(&app)
+	helpers.NewHelpers(&app)
 
-	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
-
-	srv := &http.Server{
-		Addr: ":"+portNumber,
-		Handler: routes(&app),
-	}
-	err = srv.ListenAndServe()
-	if err !=nil {
-		log.Fatal(err)
-	}
-
-
+	return nil
 }

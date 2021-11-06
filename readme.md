@@ -7,6 +7,10 @@ This is the repository for my bookings and reservations project
 - Uses [alex edwards scs session management](https://github.com/alexedwards/scs)
 - Uses [nosurf](https://github.com/justinas/nosurf)
 - Uses [govalidator](https://github.com/asaskevich/govalidator)
+# DB
+- Uses [gobuffalo](https://github.com/gobuffalo/pop/)
+
+     Buffalo [documentation](https://gobuffalo.io/en/docs/overview)
 
 # JS
 - Uses [Vanilla JS Datepicker](https://mymth.github.io/vanillajs-datepicker/#/)
