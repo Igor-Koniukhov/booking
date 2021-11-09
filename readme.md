@@ -16,3 +16,6 @@ This is the repository for my bookings and reservations project
 
 # JS
 - Uses [Vanilla JS Datepicker](https://mymth.github.io/vanillajs-datepicker/#/)
+
+### Useful resources
+- Parsing and [formating date/time in Go](https://www.pauladamsmith.com/blog/2011/05/go_time.html)
