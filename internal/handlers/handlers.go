@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Igor-Koniukhov/bookings/internal/config"
+	"github.com/Igor-Koniukhov/bookings/internal/driver"
 	"github.com/Igor-Koniukhov/bookings/internal/forms"
 	"github.com/Igor-Koniukhov/bookings/internal/helpers"
 	"github.com/Igor-Koniukhov/bookings/internal/models"
 	"github.com/Igor-Koniukhov/bookings/internal/render"
+	"github.com/Igor-Koniukhov/bookings/internal/repository"
+	"github.com/Igor-Koniukhov/bookings/internal/repository/dbrepo"
 	"net/http"
 )
 
@@ -17,12 +20,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB : dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
