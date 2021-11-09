@@ -11,6 +11,8 @@ This is the repository for my bookings and reservations project
 - Uses [gobuffalo](https://github.com/gobuffalo/pop/)
 
      Buffalo [documentation](https://gobuffalo.io/en/docs/overview)
+     For postgres [github.com/jacks/pgconn](https://github.com/jackc/pgconn)
+     
 
 # JS
 - Uses [Vanilla JS Datepicker](https://mymth.github.io/vanillajs-datepicker/#/)
