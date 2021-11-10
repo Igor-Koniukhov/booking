@@ -70,7 +70,6 @@ func run() (*driver.DB, error) {
 	if err != nil {
 		log.Fatal("Cannot connect to database! Dying...")
 	}
-	defer db.SQL.Close()
 
 	log.Println("Connected to database!")
 
