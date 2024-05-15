@@ -13,14 +13,22 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"github.com/joho/godotenv"
+	"os"
 )
-
-const portNumber = ":8080"
 
 var app config.AppConfig
 var session *scs.SessionManager
 var infoLog *log.Logger
 var errorLog *log.Logger
+
+func init(){
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Env load error: ", err)
+	}
+}
+
 
 // main is the main function
 func main() {
@@ -30,10 +38,10 @@ func main() {
 	}
 	defer db.SQL.Close()
 
-	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
+	fmt.Println(fmt.Sprintf("Starting application on port %s", os.Getenv("PORT")))
 
 	srv := &http.Server{
-		Addr:    portNumber,
+		Addr:    os.Getenv("PORT"),
 		Handler: routes(&app),
 	}
 
@@ -66,7 +74,7 @@ func run() (*driver.DB, error) {
 
 	// connect to database
 	log.Println("Connecting to database...")
-	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=postgres password=Ingvar")
+	db, err := driver.ConnectSQL(os.Getenv("DSN"))
 	if err != nil {
 		log.Fatal("Cannot connect to database! Dying...")
 	}

@@ -56,6 +56,6 @@ type RoomRestriction struct {
 	CreatedAt     time.Time   `json:"created_at"`
 	UpdatedAt     time.Time   `json:"updated_at"`
 	Room          Room        `json:"room"`
-	Reservation   Restriction `json:"reservation"`
+	Reservation   Reservation `json:"reservation"`
 	Restriction   Restriction `json:"restriction"`
 }
