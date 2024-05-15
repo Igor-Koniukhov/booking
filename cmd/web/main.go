@@ -22,16 +22,12 @@ var session *scs.SessionManager
 var infoLog *log.Logger
 var errorLog *log.Logger
 
-func init(){
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Env load error: ", err)
-	}
-}
-
-
 // main is the main function
-func main() {
+func main() {    
+    err := godotenv.Load()
+    if err != nil {
+        log.Printf("Env load error: %v\n", err)
+    }
 	db, err := run()
 	if err != nil {
 		log.Fatal(err)
@@ -74,6 +70,7 @@ func run() (*driver.DB, error) {
 
 	// connect to database
 	log.Println("Connecting to database...")
+	log.Println("DSN from environment:", os.Getenv("DSN"))
 	db, err := driver.ConnectSQL(os.Getenv("DSN"))
 	if err != nil {
 		log.Fatal("Cannot connect to database! Dying...")
