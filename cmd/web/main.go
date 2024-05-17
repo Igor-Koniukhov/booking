@@ -22,10 +22,9 @@ var session *scs.SessionManager
 var infoLog *log.Logger
 var errorLog *log.Logger
 
-// main is the main function
 func main() {    
     err := godotenv.Load()
-    if err != nil {
+    if err == nil {
         log.Printf("Env load error: %v\n", err)
     }
 	db, err := run()
@@ -48,7 +47,6 @@ func main() {
 }
 
 func run() (*driver.DB, error) {
-	// what am I going to put in the session
 	gob.Register(models.Reservation{})
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
@@ -59,25 +57,18 @@ func run() (*driver.DB, error) {
 	app.InfoLog = helpers.InfoLog
 	app.ErrorLog = helpers.ErrorLog
 
-	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
 	session.Cookie.SameSite = http.SameSiteLaxMode
 	session.Cookie.Secure = app.InProduction
-
 	app.Session = session
-
-	// connect to database
-	log.Println("Connecting to database...")
-	log.Println("DSN from environment:", os.Getenv("DSN"))
+	
 	db, err := driver.ConnectSQL(os.Getenv("DSN"))
 	if err != nil {
 		log.Fatal("Cannot connect to database! Dying...")
 	}
-
 	log.Println("Connected to database!")
-
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
