@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Igor-Koniukhov/bookings/internal/config"
 	"github.com/Igor-Koniukhov/bookings/internal/driver"
 	"github.com/Igor-Koniukhov/bookings/internal/forms"
@@ -13,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"os"
 )
 
 var Repo *Repository
@@ -44,7 +46,7 @@ func NewHandlers(r *Repository) {
 	Repo = r
 }
 
-//Home is the home page handler
+// Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	render.Template(w, r, "home.page.tmpl", &models.TemplateData{})
 }
@@ -177,6 +179,38 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
+	htmlMessage := fmt.Sprintf(`
+	<strong>Reservation Confirmation</strong><br>
+	Dear %s: <br>
+	This is confirm your reservation from %s to %s.
+	`, reservation.FirstName,
+		reservation.StartDate.Format("2006-01-02"),
+		reservation.EndDate.Format("2006-01-02"),
+	)
+	msg := models.MailData{
+		To:      reservation.Email,
+		From:    os.Getenv("HOST_MAIL"),
+		Subject: "Reservation Confirmation",
+		Content: htmlMessage,
+		Template: os.Getenv("MAIL_TEMPLATE"),
+	}
+	m.App.MailChan <- msg
+
+	htmlMessage = fmt.Sprintf(`
+	<strong>Reservation Notification</strong><br>
+	A reservation has been made for %s from %s to %s.
+	`, reservation.Room.RoomName,
+		reservation.StartDate.Format("2006-01-02"),
+		reservation.EndDate.Format("2006-01-02"),
+	)
+	msg = models.MailData{
+		To:      os.Getenv("HOST_MAIL"),
+		From:    os.Getenv("HOST_MAIL"),
+		Subject: "Reservation Notification",
+		Content: htmlMessage,
+		Template: os.Getenv("MAIL_TEMPLATE"),
+	}
+	m.App.MailChan <- msg
 
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 
