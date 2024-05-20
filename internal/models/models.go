@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // User is the users model
 type User struct {
@@ -30,7 +32,6 @@ type Restriction struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 
-// Reservation is the reservation model
 type Reservation struct {
 	ID        int       `json:"id"`
 	FirstName string    `json:"first_name"`
@@ -45,7 +46,6 @@ type Reservation struct {
 	Room      Room      `json:"room"`
 }
 
-// RoomRestriction is the room restriction model
 type RoomRestriction struct {
 	ID            int         `json:"id"`
 	StartDate     time.Time   `json:"start_date"`
@@ -58,4 +58,12 @@ type RoomRestriction struct {
 	Room          Room        `json:"room"`
 	Reservation   Reservation `json:"reservation"`
 	Restriction   Restriction `json:"restriction"`
+}
+
+type MailData struct {
+	To       string
+	From     string
+	Subject  string
+	Content  string
+	Template string
 }

@@ -10,11 +10,11 @@ import (
 	"github.com/Igor-Koniukhov/bookings/internal/models"
 	"github.com/Igor-Koniukhov/bookings/internal/render"
 	"github.com/alexedwards/scs/v2"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
-	"time"
-	"github.com/joho/godotenv"
 	"os"
+	"time"
 )
 
 var app config.AppConfig
@@ -22,16 +22,23 @@ var session *scs.SessionManager
 var infoLog *log.Logger
 var errorLog *log.Logger
 
-func main() {    
-    err := godotenv.Load()
-    if err == nil {
-        log.Printf("Env load error: %v\n", err)
-    }
+func main() {
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.InfoLog = infoLog
+	app.ErrorLog = errorLog
+	err := godotenv.Load()
+	if err == nil {
+		log.Printf("Env load error: %v\n", err)
+	}
 	db, err := run()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.SQL.Close()
+	defer close(app.MailChan)
+	listenForMail()
+	fmt.Println("Starting mail listener...")
 
 	fmt.Println(fmt.Sprintf("Starting application on port %s", os.Getenv("PORT")))
 
@@ -52,6 +59,9 @@ func run() (*driver.DB, error) {
 	gob.Register(models.Room{})
 	gob.Register(models.Restriction{})
 
+	mailChan := make(chan models.MailData)
+	app.MailChan = mailChan
+
 	// change this to true when in production
 	app.InProduction = false
 	app.InfoLog = helpers.InfoLog
@@ -63,7 +73,7 @@ func run() (*driver.DB, error) {
 	session.Cookie.SameSite = http.SameSiteLaxMode
 	session.Cookie.Secure = app.InProduction
 	app.Session = session
-	
+
 	db, err := driver.ConnectSQL(os.Getenv("DSN"))
 	if err != nil {
 		log.Fatal("Cannot connect to database! Dying...")
