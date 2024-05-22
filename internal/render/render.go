@@ -28,6 +28,9 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 	td.Warning = app.Session.PopString(r.Context(), "warning")
 	td.Error = app.Session.PopString(r.Context(), "error")
 	td.CSRFToken = nosurf.Token(r)
+	if app.Session.Exists(r.Context(), "user_id") {
+		td.IsAuthenticated = 1
+	}
 	return td
 }
 
@@ -44,7 +47,6 @@ func Template(w http.ResponseWriter, r *http.Request, tmpl string, td *models.Te
 
 	t, ok := tc[tmpl]
 	if !ok {
-		//log.Fatal("Could not get template from template cache")
 		return errors.New("could not get template from cache")
 	}
 
