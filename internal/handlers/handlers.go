@@ -491,3 +491,11 @@ func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
+
+func (m *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
+	log.Println("Admin Dashboard Handler Called")
+	err := render.Template(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{})
+	if err != nil {
+		log.Println("Error rendering template:", err)
+	}
+}

@@ -35,5 +35,6 @@ func Auth(next http.Handler) http.Handler {
 			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 			return
 		}
+		next.ServeHTTP(w, r)
 	})
 }
