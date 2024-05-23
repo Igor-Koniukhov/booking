@@ -501,7 +501,16 @@ func (m *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) AdminNewReservations(w http.ResponseWriter, r *http.Request) {
-	err := render.Template(w, r, "reservations-new.page.tmpl", &models.TemplateData{})
+	reservations, err := m.DB.AllNewReservations()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	data := make(map[string]interface{})
+	data["reservations"] = reservations
+	err = render.Template(w, r, "reservations-new.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 	if err != nil {
 		log.Println("Error rendering template:", err)
 	}
