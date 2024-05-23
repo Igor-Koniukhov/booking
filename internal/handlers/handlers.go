@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Igor-Koniukhov/bookings/internal/helpers"
 	"log"
 	"net/http"
 	"os"
@@ -493,8 +494,37 @@ func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
-	log.Println("Admin Dashboard Handler Called")
 	err := render.Template(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{})
+	if err != nil {
+		log.Println("Error rendering template:", err)
+	}
+}
+
+func (m *Repository) AdminNewReservations(w http.ResponseWriter, r *http.Request) {
+	err := render.Template(w, r, "reservations-new.page.tmpl", &models.TemplateData{})
+	if err != nil {
+		log.Println("Error rendering template:", err)
+	}
+}
+
+func (m *Repository) AdminAllReservations(w http.ResponseWriter, r *http.Request) {
+	reservations, err := m.DB.AllReservations()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	data := make(map[string]interface{})
+	data["reservations"] = reservations
+	err = render.Template(w, r, "reservations-all.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
+	if err != nil {
+		log.Println("Error rendering template:", err)
+	}
+}
+
+func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Request) {
+	err := render.Template(w, r, "reservations-calendar.page.tmpl", &models.TemplateData{})
 	if err != nil {
 		log.Println("Error rendering template:", err)
 	}
