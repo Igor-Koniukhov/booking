@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/gob"
 	"fmt"
 	"github.com/Igor-Koniukhov/bookings/internal/config"
@@ -35,7 +36,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.SQL.Close()
+	defer func(SQL *sql.DB) {
+		err := SQL.Close()
+		if err != nil {
+
+		}
+	}(db.SQL)
 	defer close(app.MailChan)
 	listenForMail()
 	fmt.Println("Starting mail listener...")
@@ -58,6 +64,7 @@ func run() (*driver.DB, error) {
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
 	gob.Register(models.Restriction{})
+	gob.Register(map[string]int{})
 
 	mailChan := make(chan models.MailData)
 	app.MailChan = mailChan

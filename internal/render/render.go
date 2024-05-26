@@ -9,20 +9,52 @@ import (
 	"github.com/justinas/nosurf"
 	"html/template"
 	"net/http"
+	"os"
 	"path/filepath"
+	"strconv"
+	"time"
 )
 
-var functions = template.FuncMap{}
+var functions = template.FuncMap{
+	"humanDate":  HumanDate,
+	"formatDate": FormatDate,
+	"iterate":    Iterate,
+	"add":        Add,
+	"toInt":      toInt,
+}
 
 var app *config.AppConfig
 var pathToTemplates = "./templates"
 
-// NewRenderer sets the config for the template package
+func Add(a, b int) int {
+	return a + b
+}
+
+func toInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
+}
+func Iterate(count int) []int {
+	var i int
+	var items []int
+	for i = 0; i < count; i++ {
+		items = append(items, i)
+	}
+	return items
+}
+
 func NewRenderer(a *config.AppConfig) {
 	app = a
 }
 
-// AddDefaultData adds data for all templates
+func HumanDate(t time.Time) string {
+	return t.Format(os.Getenv("TIME_FORMAT"))
+}
+
+func FormatDate(t time.Time, f string) string {
+	return t.Format(f)
+}
+
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
 	td.Flash = app.Session.PopString(r.Context(), "flash")
 	td.Warning = app.Session.PopString(r.Context(), "warning")
