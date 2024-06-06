@@ -1,51 +1,64 @@
 {{template "base".}}
 
 {{define "content"}}
-    <div class="main-content-wrapper">
-        <section class="section">
-            <div class="container">
-                <div class="row ">
-                    <div class="col-6 m-auto ">
-                        <h1 class="mt-5 text-center">Search for Availability</h1>
-                        <form action="/search-availability" method="post" novalidate class="needs-validation">
-                            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+<div class="main-content-wrapper">
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-6 m-auto">
+          <h1 class="mt-5 text-center">Search for Availability</h1>
+          <form
+            action="/search-availability"
+            method="post"
+            novalidate
+            class="needs-validation"
+          >
+            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" />
 
-                            <div class="form-row" id="reservation-dates">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <input required type="text"
-                                               class="form-control"
-                                               id="start_date"
-                                               name="start"
-                                               placeholder="Arrival"
-                                               aria-describedby="startDateHelp">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <input required type="text"
-                                               class="form-control"
-                                               id="end_date"
-                                               name="end"
-                                               placeholder="Departure"
-                                               aria-describedby="endDateHelp">
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary d-block">Search Availability</button>
-                        </form>
-                    </div>
+            <div class="form-row" id="reservation-dates">
+              <div class="col">
+                <div class="form-group">
+                  <input
+                    required
+                    type="text"
+                    class="form-control"
+                    id="start_date"
+                    name="start"
+                    placeholder="Arrival"
+                    aria-describedby="startDateHelp"
+                  />
                 </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <input
+                    required
+                    type="text"
+                    class="form-control"
+                    id="end_date"
+                    name="end"
+                    placeholder="Departure"
+                    aria-describedby="endDateHelp"
+                  />
+                </div>
+              </div>
             </div>
-        </section>
+            <button type="submit" class="btn btn-primary d-block">
+              Search Availability
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-{{end}}
+  </section>
+</div>
+{{ end }}
 
 {{define "js"}}
-    <script>
-        const elem = document.getElementById('reservation-dates');
-        const rangePicker = new DateRangePicker(elem, {
-            format: "yyyy-mm-dd",
-        });
-    </script>
-{{end}}
+<script>
+  const elem = document.getElementById("reservation-dates");
+  const rangePicker = new DateRangePicker(elem, {
+    format: "yyyy-mm-dd",
+  });
+</script>
+{{ end }}

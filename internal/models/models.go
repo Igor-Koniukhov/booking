@@ -1,9 +1,70 @@
 package models
 
-// Reservation holds reservation data
+import (
+	"time"
+)
+
+// User is the users model
+type User struct {
+	ID          int       `json:"id"`
+	FirstName   string    `json:"first_name"`
+	LastName    string    `json:"last_name"`
+	Email       string    `json:"email"`
+	Password    string    `json:"password"`
+	AccessLevel int       `json:"access_level"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+// Room is the room model
+type Room struct {
+	ID        int       `json:"id"`
+	RoomName  string    `json:"room_name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// Restriction is the restriction model
+type Restriction struct {
+	ID           int       `json:"id"`
+	Restrictions string    `json:"restrictions"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+}
+
 type Reservation struct {
-	FirstName string
-	LastName  string
-	Email     string
-	Phone     string
+	ID        int       `json:"id"`
+	FirstName string    `json:"first_name"`
+	LastName  string    `json:"last_name"`
+	Email     string    `json:"email"`
+	Phone     string    `json:"phone"`
+	StartDate time.Time `json:"start_date"`
+	EndDate   time.Time `json:"end_date"`
+	RoomID    int       `json:"room_id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Room      Room      `json:"room"`
+	Processed int       `json:"processed"`
+}
+
+type RoomRestriction struct {
+	ID            int         `json:"id"`
+	StartDate     time.Time   `json:"start_date"`
+	EndDate       time.Time   `json:"end_date"`
+	RoomID        int         `json:"room_id"`
+	ReservationID int         `json:"reservation_id"`
+	RestrictionID int         `json:"restriction_id"`
+	CreatedAt     time.Time   `json:"created_at"`
+	UpdatedAt     time.Time   `json:"updated_at"`
+	Room          Room        `json:"room"`
+	Reservation   Reservation `json:"reservation"`
+	Restriction   Restriction `json:"restriction"`
+}
+
+type MailData struct {
+	To       string
+	From     string
+	Subject  string
+	Content  string
+	Template string
 }
